@@ -6,382 +6,574 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <style>
-    :root {
-      --gu-yellow: #ffd200;
-      --gu-dark: #0b1120;
-      --gu-darker: #020617;
-      --gu-border: #1f2933;
-      --night-bg: #020b1f;
-      --night-border: #1e3a8a;
+    :root{
+      --gu-yellow:#ffd200;
+      --gu-dark:#0b1120;
+      --gu-darker:#020617;
+      --gu-border:#1f2933;
+      --night-bg:#020b1f;
+      --night-border:#1e3a8a;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+
+    body{
+      font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:var(--gu-dark);
+      color:#e5e7eb;
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+      padding:8px;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: var(--gu-dark);
-      color: #e5e7eb;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      padding: 8px;
+    .shell{
+      width:100%;
+      max-width:2000px;
+      background:var(--gu-darker);
+      border-radius:14px;
+      border:1px solid var(--gu-border);
+      box-shadow:0 18px 45px rgba(0,0,0,.6);
+      overflow:hidden;
     }
 
-    .shell {
-      width: 100%;
-      max-width: 2000px;
-      background: var(--gu-darker);
-      border-radius: 14px;
-      border: 1px solid var(--gu-border);
-      box-shadow: 0 18px 45px rgba(0,0,0,.6);
-      overflow: hidden;
+    header{
+      background:#fff;
+      border-bottom:4px solid var(--gu-yellow);
+      padding:12px 12px;
+    }
+    .header-inner{
+      display:flex;
+      align-items:center;
+      gap:16px;
+      width:100%;
+    }
+    .header-logo img{
+      height:auto;
+      width:100%;
+      max-width:260px;
+      object-fit:contain;
+      display:block;
+    }
+    .header-text{display:flex;flex-direction:column}
+    .header-title{
+      font-size:1.1rem;
+      font-weight:800;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      color:#111827;
+    }
+    .header-sub{font-size:.8rem;color:#4b5563}
+    .header-clock{margin-left:auto;text-align:right}
+    .header-clock-label{
+      font-size:.65rem;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      color:#6b7280;
+      white-space:nowrap;
+    }
+    .header-clock-time{
+      font-size:1.6rem;
+      font-weight:800;
+      color:#111827;
+      font-variant-numeric:tabular-nums;
+      white-space:nowrap;
     }
 
-    header {
-      background: #fff;
-      border-bottom: 4px solid var(--gu-yellow);
-      padding: 12px 12px;
+    main{
+      padding:12px;
+      display:flex;
+      flex-direction:column;
+      gap:16px;
     }
 
-    .header-inner {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      width: 100%;
+    .continent-section{
+      border-radius:16px;
+      background:radial-gradient(circle at top left,#111827,#020617 60%);
+      border:1px solid rgba(148,163,184,.25);
+      padding:12px;
+    }
+    .continent-header{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding-bottom:8px;
+      border-bottom:1px solid rgba(55,65,81,.9);
+      margin-bottom:10px;
+    }
+    .continent-badge{
+      width:8px;height:22px;border-radius:999px;background:var(--gu-yellow);
+    }
+    .continent-title{
+      font-size:.9rem;
+      font-weight:700;
+      letter-spacing:.12em;
+      text-transform:uppercase;
     }
 
-    .header-logo img {
-      height: auto;
-      width: 100%;
-      max-width: 260px;
-      object-fit: contain;
-      display: block;
+    .city-grid{
+      display:grid;
+      grid-template-columns:1fr; /* mobile default */
+      gap:12px;
     }
 
-    .header-text { display: flex; flex-direction: column; }
-
-    .header-title {
-      font-size: 1.1rem;
-      font-weight: 800;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-      color: #111827;
+    .city-card{
+      background:#020617;
+      border-radius:14px;
+      padding:14px;
+      border:1px solid rgba(31,41,55,.9);
+      box-shadow:0 8px 20px rgba(0,0,0,.6);
+      user-select:none;
+    }
+    .city-card.night{background:var(--night-bg);border-color:var(--night-border)}
+    .city-name{font-size:.95rem;font-weight:600}
+    .city-time{
+      font-size:1.6rem;
+      font-weight:700;
+      margin-top:6px;
+      font-variant-numeric:tabular-nums;
+    }
+    .city-meta{
+      font-size:.75rem;
+      color:#9ca3af;
+      margin-top:4px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+    .tap-hint{
+      margin-left:auto;
+      font-size:.7rem;
+      color:#94a3b8;
+      opacity:.9;
     }
 
-    .header-sub { font-size: .8rem; color: #4b5563; }
-
-    .header-clock { margin-left: auto; text-align: right; }
-
-    .header-clock-label {
-      font-size: .65rem;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-      color: #6b7280;
-      white-space: nowrap;
+    @media (hover:hover) and (pointer:fine){
+      .city-grid{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+      .tap-hint{display:none}
     }
 
-    .header-clock-time {
-      font-size: 1.6rem;
-      font-weight: 800;
-      color: #111827;
-      font-variant-numeric: tabular-nums;
-      white-space: nowrap;
+    .footer{
+      padding:12px 18px 16px;
+      font-size:.7rem;
+      color:#6b7280;
+      text-align:center;
     }
 
-    main {
-      padding: 12px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
+    /* ===== Overlay + Popover / Bottom sheet ===== */
+    .forecast-layer{
+      position:fixed; inset:0;
+      display:none;
+      z-index:9999;
+      background:rgba(2,6,23,.45);
+      backdrop-filter:blur(3px);
+      -webkit-backdrop-filter:blur(3px);
+    }
+    .forecast-layer.show{display:block}
+
+    .forecast-popover{
+      position:fixed;
+      display:none;
+      z-index:10000;
+      width:min(720px,calc(100vw - 24px));
+      min-width:560px;
+      max-width:720px;
+      background:#020617;
+      border:1px solid rgba(148,163,184,.22);
+      box-shadow:0 24px 60px rgba(0,0,0,.65);
+      border-radius:16px;
+      padding:12px 14px 14px;
+    }
+    .forecast-popover.show{display:block}
+
+    .forecast-header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding-bottom:10px;
+      margin-bottom:10px;
+      border-bottom:1px solid rgba(55,65,81,.7);
+    }
+    .forecast-title{
+      font-size:.8rem;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      color:#cbd5e1;
+    }
+    .forecast-city{
+      font-size:.9rem;
+      font-weight:700;
+      color:#e5e7eb;
+      margin-top:2px;
+    }
+    .forecast-close{
+      appearance:none;
+      border:1px solid rgba(148,163,184,.25);
+      background:rgba(255,255,255,.04);
+      color:#e5e7eb;
+      padding:6px 10px;
+      border-radius:999px;
+      font-size:.8rem;
+      cursor:pointer;
     }
 
-    .continent-section {
-      border-radius: 16px;
-      background: radial-gradient(circle at top left, #111827, #020617 60%);
-      border: 1px solid rgba(148,163,184,.25);
-      padding: 12px;
+    .forecast-grid{
+      display:grid;
+      grid-template-columns:repeat(7,minmax(0,1fr));
+      gap:8px;
     }
-
-    .continent-header {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding-bottom: 8px;
-      border-bottom: 1px solid rgba(55,65,81,.9);
-      margin-bottom: 10px;
+    .day{
+      background:rgba(255,255,255,.03);
+      border:1px solid rgba(148,163,184,.12);
+      border-radius:12px;
+      padding:10px 8px;
+      text-align:center;
     }
+    .day-name{font-size:.75rem;color:#cbd5e1;margin-bottom:6px}
+    .day-icon{font-size:1.1rem;margin-bottom:6px}
+    .day-temp{font-size:.78rem;color:#e5e7eb;font-variant-numeric:tabular-nums;white-space:nowrap}
+    .forecast-note{margin-top:10px;font-size:.72rem;color:#94a3b8;opacity:.9}
 
-    .continent-badge {
-      width: 8px;
-      height: 22px;
-      border-radius: 999px;
-      background: var(--gu-yellow);
-    }
-
-    .continent-title {
-      font-size: .9rem;
-      font-weight: 700;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-    }
-
-    .city-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 12px;
-    }
-
-    .city-card {
-      background: #020617;
-      border-radius: 14px;
-      padding: 14px;
-      border: 1px solid rgba(31,41,55,.9);
-      box-shadow: 0 8px 20px rgba(0,0,0,.6);
-      position: relative;
-      user-select: none;
-    }
-
-    .city-card.night {
-      background: var(--night-bg);
-      border-color: var(--night-border);
-    }
-
-    .city-name { font-size: .95rem; font-weight: 600; }
-    .city-time {
-      font-size: 1.6rem;
-      font-weight: 700;
-      margin-top: 6px;
-      font-variant-numeric: tabular-nums;
-    }
-
-    .city-meta {
-      font-size: .75rem;
-      color: #9ca3af;
-      margin-top: 4px;
-      display: flex;
-      gap: 10px;
-      align-items: center;
-    }
-
-    .tap-hint {
-      margin-left: auto;
-      font-size: .7rem;
-      color: #94a3b8;
-    }
-
-    @media (hover: hover) and (pointer: fine) {
-      .city-grid {
-        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    @media (max-width:768px){
+      .forecast-popover{
+        left:0 !important; right:0 !important;
+        bottom:0 !important; top:auto !important;
+        width:100% !important;
+        min-width:0 !important;
+        max-width:none !important;
+        border-radius:18px 18px 0 0;
+        padding:14px 14px 18px;
       }
-      .tap-hint { display: none; }
-    }
-
-    .forecast-layer {
-      position: fixed;
-      inset: 0;
-      display: none;
-      z-index: 9999;
-      background: rgba(2, 6, 23, 0.45);
-      backdrop-filter: blur(3px);
-    }
-
-    .forecast-layer.show { display: block; }
-
-    .forecast-popover {
-      position: fixed;
-      display: none;
-      z-index: 10000;
-      width: min(720px, calc(100vw - 24px));
-      min-width: 560px;
-      background: #020617;
-      border: 1px solid rgba(148,163,184,0.22);
-      box-shadow: 0 24px 60px rgba(0,0,0,.65);
-      border-radius: 16px;
-      padding: 14px;
-    }
-
-    .forecast-popover.show { display: block; }
-
-    .forecast-header {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 10px;
-      border-bottom: 1px solid rgba(55,65,81,.7);
-      padding-bottom: 8px;
-    }
-
-    .forecast-title {
-      font-size: .75rem;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-      color: #cbd5e1;
-    }
-
-    .forecast-city {
-      font-size: .9rem;
-      font-weight: 700;
-      margin-top: 2px;
-    }
-
-    .forecast-close {
-      border: 1px solid rgba(148,163,184,.25);
-      background: rgba(255,255,255,.04);
-      color: #e5e7eb;
-      border-radius: 999px;
-      padding: 6px 10px;
-      cursor: pointer;
-    }
-
-    .forecast-grid {
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      gap: 8px;
-    }
-
-    .day {
-      text-align: center;
-      border: 1px solid rgba(148,163,184,.12);
-      border-radius: 12px;
-      padding: 8px;
-    }
-
-    .day-name { font-size: .7rem; margin-bottom: 4px; }
-    .day-icon { font-size: 1.1rem; margin-bottom: 4px; }
-    .day-temp { font-size: .75rem; }
-
-    @media (max-width: 768px) {
-      .forecast-popover {
-        left: 0 !important;
-        right: 0 !important;
-        bottom: 0 !important;
-        top: auto !important;
-        min-width: 0 !important;
-        border-radius: 18px 18px 0 0;
-      }
-      .forecast-grid { grid-template-columns: repeat(4, 1fr); }
+      .forecast-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
     }
   </style>
 </head>
 
 <body>
-<div class="shell">
+  <div class="shell">
+    <header>
+      <div class="header-inner">
+        <div class="header-logo"><img src="Logo.webp" alt="Gühring Logo"></div>
+        <div class="header-text">
+          <div class="header-title">GSM Länderzeiten</div>
+          <div class="header-sub">Zeitzonen · Wetter · 7-Tage Vorschau</div>
+        </div>
+        <div class="header-clock">
+          <div class="header-clock-label">Lokale Zeit · Regensburg</div>
+          <div class="header-clock-time" id="local-time">--:--:--</div>
+        </div>
+      </div>
+    </header>
 
-<header>
-  <div class="header-inner">
-    <div class="header-logo"><img src="Logo.webp"></div>
-    <div class="header-text">
-      <div class="header-title">GSM Länderzeiten</div>
-      <div class="header-sub">Zeitzonen · Wetter · Vorschau</div>
-    </div>
-    <div class="header-clock">
-      <div class="header-clock-label">Lokale Zeit · Regensburg</div>
-      <div class="header-clock-time" id="local-time">--:--:--</div>
-    </div>
+    <main>
+      <section class="continent-section">
+        <div class="continent-header">
+          <div class="continent-badge"></div>
+          <div class="continent-title">Europa</div>
+        </div>
+        <div class="city-grid" id="grid-europa"></div>
+      </section>
+
+      <section class="continent-section">
+        <div class="continent-header">
+          <div class="continent-badge"></div>
+          <div class="continent-title">Amerika</div>
+        </div>
+        <div class="city-grid" id="grid-amerika"></div>
+      </section>
+
+      <section class="continent-section">
+        <div class="continent-header">
+          <div class="continent-badge"></div>
+          <div class="continent-title">Asien</div>
+        </div>
+        <div class="city-grid" id="grid-asien"></div>
+      </section>
+    </main>
+
+    <div class="footer">GSM Länderzeiten · GitHub Pages</div>
   </div>
-</header>
 
-<main>
-  <section class="continent-section">
-    <div class="continent-header">
-      <div class="continent-badge"></div>
-      <div class="continent-title">Europa</div>
-    </div>
-    <div class="city-grid" id="grid-europa"></div>
-  </section>
-</main>
+  <div class="forecast-layer" id="forecast-layer"></div>
 
-<div class="forecast-layer" id="layer"></div>
-<div class="forecast-popover" id="popover">
-  <div class="forecast-header">
-    <div>
-      <div class="forecast-title">7-Tage Wetter</div>
-      <div class="forecast-city" id="fcity"></div>
+  <div class="forecast-popover" id="forecast-popover" aria-hidden="true">
+    <div class="forecast-header">
+      <div>
+        <div class="forecast-title">7-Tage Wetter</div>
+        <div class="forecast-city" id="forecast-city">—</div>
+      </div>
+      <button class="forecast-close" id="forecast-close">Schließen</button>
     </div>
-    <button class="forecast-close" id="fclose">Schließen</button>
+    <div class="forecast-grid" id="forecast-grid"></div>
+    <div class="forecast-note">Quelle: Open-Meteo</div>
   </div>
-  <div class="forecast-grid" id="fgrid"></div>
-</div>
 
 <script>
-const localTZ = "Europe/Berlin";
-const cities = [
-  { name:"Ancenis", tz:"Europe/Paris", lat:47.366, lon:-1.175, cont:"Europa" },
-  { name:"Getafe", tz:"Europe/Madrid", lat:40.308, lon:-3.732, cont:"Europa" },
-  { name:"Lidköping", tz:"Europe/Stockholm", lat:58.505, lon:13.157, cont:"Europa" }
-];
+  const localTZ = "Europe/Berlin";
+  const HOVER_DELAY_MS = 750; // ✅ hier ist der Delay
 
-const layer = document.getElementById("layer");
-const pop = document.getElementById("popover");
-const fcity = document.getElementById("fcity");
-const fgrid = document.getElementById("fgrid");
-const fclose = document.getElementById("fclose");
+  const cities = [
+    { name:"Ancenis",    tz:"Europe/Paris",      lat:47.366,  lon:-1.175,  cont:"Europa" },
+    { name:"Getafe",     tz:"Europe/Madrid",     lat:40.308,  lon:-3.732,  cont:"Europa" },
+    { name:"Lidköping",  tz:"Europe/Stockholm",  lat:58.505,  lon:13.157,  cont:"Europa" },
+    { name:"Mailand",    tz:"Europe/Rome",       lat:45.464,  lon:9.190,   cont:"Europa" },
+    { name:"Wien",       tz:"Europe/Vienna",     lat:48.208,  lon:16.373,  cont:"Europa" },
+    { name:"Belgrad",    tz:"Europe/Belgrade",   lat:44.787,  lon:20.457,  cont:"Europa" },
+    { name:"Birmingham", tz:"Europe/London",     lat:52.486,  lon:-1.890,  cont:"Europa" },
 
-let hoverTimer = null;
-let active = null;
+    { name:"Brookfield", tz:"America/Chicago",   lat:43.060,  lon:-88.106, cont:"Amerika" },
+    { name:"Salto",      tz:"America/Sao_Paulo", lat:-23.200, lon:-47.286, cont:"Amerika" },
 
-function grid(c){ return document.getElementById("grid-"+c.toLowerCase()); }
+    { name:"Pune",       tz:"Asia/Kolkata",      lat:18.520,  lon:73.856,  cont:"Asien" },
+    { name:"Südkorea",   tz:"Asia/Seoul",        lat:37.566,  lon:126.978, cont:"Asien" },
+    { name:"Thailand",   tz:"Asia/Bangkok",      lat:13.756,  lon:100.502, cont:"Asien" },
+  ];
 
-function createCards(){
-  cities.forEach((c,i)=>{
-    c.id="c"+i;
-    grid(c.cont).insertAdjacentHTML("beforeend",`
-      <div class="city-card" id="${c.id}">
-        <div class="city-name">${c.name}</div>
-        <div class="city-time">--:--</div>
-        <div class="city-meta"><span class="offset">±0 h</span></div>
-      </div>
-    `);
+  const layer   = document.getElementById("forecast-layer");
+  const popover = document.getElementById("forecast-popover");
+  const popCity = document.getElementById("forecast-city");
+  const popGrid = document.getElementById("forecast-grid");
+  const popClose= document.getElementById("forecast-close");
 
-    const card=document.getElementById(c.id);
+  let hideTimer = null;
+  let hoverTimer = null;
+  let activeIndex = null;
 
-    if (matchMedia("(hover:hover)").matches) {
-      card.addEventListener("mouseenter", ()=>{
-        hoverTimer = setTimeout(()=>showForecast(i, card), 800);
-      });
-      card.addEventListener("mouseleave", ()=>{
-        clearTimeout(hoverTimer);
-        hideForecast();
-      });
-    } else {
-      card.addEventListener("click", ()=>showForecast(i, card, true));
+  function grid(cont){ return document.getElementById("grid-" + cont.toLowerCase()); }
+
+  function isTouchLike(){
+    return window.matchMedia("(hover: none)").matches || window.matchMedia("(pointer: coarse)").matches;
+  }
+
+  function weatherIcon(code){
+    if (code === 0) return "☀️";
+    if (code <= 2) return "🌤";
+    if (code <= 3) return "☁️";
+    if (code >= 45 && code <= 48) return "🌫";
+    if ((code >= 51 && code <= 67) || (code >= 80 && code <= 82)) return "🌧";
+    if (code >= 71 && code <= 77) return "❄️";
+    if (code >= 95) return "⛈";
+    return "☁️";
+  }
+
+  function weekdayShort(isoDate){
+    const d = new Date(isoDate + "T00:00:00");
+    return new Intl.DateTimeFormat("de-DE", { weekday:"short" }).format(d);
+  }
+
+  function scheduleHide(){
+    clearTimeout(hideTimer);
+    hideTimer = setTimeout(hideForecast, 180);
+  }
+
+  function hideForecast(){
+    activeIndex = null;
+    layer.classList.remove("show");
+    popover.classList.remove("show");
+    popover.setAttribute("aria-hidden","true");
+  }
+
+  function positionPopover(anchorEl, forceBottomSheet){
+    if (forceBottomSheet || window.matchMedia("(max-width:768px)").matches){
+      popover.style.left = "0px";
+      popover.style.right = "0px";
+      popover.style.top = "auto";
+      popover.style.bottom = "0px";
+      return;
     }
-  });
-}
 
-function showForecast(i, anchor, forceBottom=false){
-  active=i;
-  layer.classList.add("show");
-  pop.classList.add("show");
-  fcity.textContent=cities[i].name;
+    const rect = anchorEl.getBoundingClientRect();
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    const margin = 12;
 
-  const r=anchor.getBoundingClientRect();
-  pop.style.left=Math.max(12, r.left)+"px";
-  pop.style.top=(r.bottom+10)+"px";
-}
+    const popW = Math.min(720, vw - margin*2);
+    const popH = 280; // grobe Höhe fürs Positionieren
 
-function hideForecast(){
-  layer.classList.remove("show");
-  pop.classList.remove("show");
-}
+    let left = rect.left + rect.width/2 - popW/2;
+    left = Math.max(margin, Math.min(left, vw - popW - margin));
 
-fclose.onclick=hideForecast;
-layer.onclick=hideForecast;
+    const below = rect.bottom + 10;
+    const above = rect.top - popH - 10;
 
-function updateTimes(){
-  const now=new Date();
-  document.getElementById("local-time").textContent=
-    new Intl.DateTimeFormat("de-DE",{hour:"2-digit",minute:"2-digit",second:"2-digit",timeZone:localTZ}).format(now);
+    let top;
+    if (below + popH < vh - margin) top = below;
+    else top = Math.max(margin, above);
 
-  cities.forEach(c=>{
-    document.querySelector(`#${c.id} .city-time`).textContent=
-      new Intl.DateTimeFormat("de-DE",{hour:"2-digit",minute:"2-digit",timeZone:c.tz}).format(now);
-  });
-}
+    popover.style.width = popW + "px";
+    popover.style.left = left + "px";
+    popover.style.top = top + "px";
+    popover.style.bottom = "auto";
+  }
 
-createCards();
-updateTimes();
-setInterval(updateTimes,1000);
+  function renderForecast(index){
+    const c = cities[index];
+    popCity.textContent = c.name;
+    popGrid.innerHTML = "";
+
+    if (!c.forecast){
+      popGrid.innerHTML = `<div style="grid-column:1/-1;color:#94a3b8;font-size:.85rem">Wetterdaten werden geladen…</div>`;
+      return;
+    }
+
+    c.forecast.forEach(d=>{
+      const dayName = weekdayShort(d.date);
+      const icon = weatherIcon(d.code);
+      const min = (d.min != null) ? Math.round(d.min) : "–";
+      const max = (d.max != null) ? Math.round(d.max) : "–";
+
+      popGrid.insertAdjacentHTML("beforeend", `
+        <div class="day">
+          <div class="day-name">${dayName}</div>
+          <div class="day-icon">${icon}</div>
+          <div class="day-temp">${min}° / ${max}°</div>
+        </div>
+      `);
+    });
+  }
+
+  function showForecast(index, anchorEl, forceBottomSheet=false){
+    activeIndex = index;
+    layer.classList.add("show");
+    popover.classList.add("show");
+    popover.setAttribute("aria-hidden","false");
+    positionPopover(anchorEl, forceBottomSheet);
+    renderForecast(index);
+
+    if (!cities[index].forecast) loadWeatherAndForecast(index);
+  }
+
+  async function loadWeatherAndForecast(index){
+    const c = cities[index];
+    const card = document.getElementById(c.id);
+    const weatherEl = card?.querySelector(".weather");
+
+    try{
+      const url =
+        `https://api.open-meteo.com/v1/forecast?latitude=${encodeURIComponent(c.lat)}` +
+        `&longitude=${encodeURIComponent(c.lon)}` +
+        `&current_weather=true&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=auto`;
+
+      const resp = await fetch(url);
+      const data = await resp.json();
+
+      // current
+      if (weatherEl && data?.current_weather?.temperature != null){
+        const t = Math.round(data.current_weather.temperature);
+        const icon = weatherIcon(data.current_weather.weathercode);
+        weatherEl.textContent = `${t}°C ${icon}`;
+      }
+
+      // cache daily
+      if (data?.daily?.time?.length){
+        const days = Math.min(7, data.daily.time.length);
+        c.forecast = [];
+        for (let i=0;i<days;i++){
+          c.forecast.push({
+            date: data.daily.time[i],
+            code: data.daily.weathercode?.[i],
+            min: data.daily.temperature_2m_min?.[i],
+            max: data.daily.temperature_2m_max?.[i]
+          });
+        }
+        if (activeIndex === index) renderForecast(index);
+      }
+    } catch (e){
+      if (weatherEl) weatherEl.textContent = "—";
+      c.forecast = null;
+    }
+  }
+
+  function createCards(){
+    cities.forEach((c,i)=>{
+      c.id = "c"+i;
+      c.forecast = null;
+
+      grid(c.cont).insertAdjacentHTML("beforeend", `
+        <div class="city-card" id="${c.id}">
+          <div class="city-name">${c.name}</div>
+          <div class="city-time">--:--</div>
+          <div class="city-meta">
+            <span class="offset">±0 h</span>
+            <span class="weather">--°C</span>
+            <span class="tap-hint">Tippen: 7-Tage</span>
+          </div>
+        </div>
+      `);
+
+      const card = document.getElementById(c.id);
+
+      if (!isTouchLike()){
+        // ✅ echter Delay: erst nach 750ms öffnen
+        card.addEventListener("mouseenter", () => {
+          clearTimeout(hoverTimer);
+          clearTimeout(hideTimer);
+          hoverTimer = setTimeout(() => showForecast(i, card, false), HOVER_DELAY_MS);
+        });
+
+        // wenn du vorher weggehst: Timer abbrechen + ggf. schließen
+        card.addEventListener("mouseleave", () => {
+          clearTimeout(hoverTimer);
+          scheduleHide();
+        });
+      } else {
+        // Mobile: Tap öffnet sofort (Bottom Sheet)
+        card.addEventListener("click", () => showForecast(i, card, true));
+      }
+
+      loadWeatherAndForecast(i);
+    });
+
+    // Popover soll beim Überfahren nicht sofort schließen
+    popover.addEventListener("mouseenter", () => {
+      clearTimeout(hideTimer);
+    });
+    popover.addEventListener("mouseleave", () => {
+      scheduleHide();
+    });
+  }
+
+  layer.addEventListener("click", hideForecast);
+  popClose.addEventListener("click", hideForecast);
+  document.addEventListener("keydown", (e)=>{ if (e.key === "Escape") hideForecast(); });
+
+  function updateTimes(){
+    const now = new Date();
+
+    // Header: mit Sekunden
+    document.getElementById("local-time").textContent =
+      new Intl.DateTimeFormat("de-DE",{hour:"2-digit",minute:"2-digit",second:"2-digit",timeZone:localTZ}).format(now);
+
+    const localHour = Number(
+      new Intl.DateTimeFormat("en-US",{hour:"numeric",hour12:false,timeZone:localTZ}).format(now)
+    );
+
+    cities.forEach(c=>{
+      const card = document.getElementById(c.id);
+      if (!card) return;
+
+      const timeEl = card.querySelector(".city-time");
+      const offEl  = card.querySelector(".offset");
+
+      const cityHour = Number(
+        new Intl.DateTimeFormat("en-US",{hour:"numeric",hour12:false,timeZone:c.tz}).format(now)
+      );
+
+      let diff = cityHour - localHour;
+      if (diff > 12) diff -= 24;
+      if (diff < -12) diff += 24;
+
+      offEl.textContent = (diff > 0 ? "+" : "") + diff + " h";
+      timeEl.textContent = new Intl.DateTimeFormat("de-DE",{hour:"2-digit",minute:"2-digit",timeZone:c.tz}).format(now);
+
+      card.classList.toggle("night", cityHour < 6 || cityHour >= 18);
+    });
+  }
+
+  createCards();
+  updateTimes();
+  setInterval(updateTimes, 1000);
 </script>
 </body>
 </html>
-
