@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <title>GSM Länderzeiten</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <style>
     :root {
       --gu-yellow: #ffd200;
@@ -23,36 +24,43 @@
       min-height: 100vh;
       display: flex;
       justify-content: center;
-      padding: 16px;
+      padding: 12px;
     }
 
     .shell {
-      width: 90%;
+      width: 100%;
       max-width: 2000px;
       background: var(--gu-darker);
-      border-radius: 24px;
+      border-radius: 20px;
       border: 1px solid var(--gu-border);
       box-shadow: 0 18px 45px rgba(0,0,0,.6);
       overflow: hidden;
     }
 
-    /* HEADER */
+    /* ================= HEADER ================= */
     header {
       background: #fff;
       border-bottom: 4px solid var(--gu-yellow);
-      padding: 14px 22px;
+      padding: 14px 18px;
     }
 
     .header-inner {
       display: flex;
       align-items: center;
-      gap: 18px;
+      gap: 16px;
     }
 
-    .header-logo img { height: 40px; }
+    .header-logo img {
+      height: 36px;
+    }
+
+    .header-text {
+      display: flex;
+      flex-direction: column;
+    }
 
     .header-title {
-      font-size: 1.4rem;
+      font-size: 1.3rem;
       font-weight: 800;
       letter-spacing: .12em;
       text-transform: uppercase;
@@ -60,7 +68,7 @@
     }
 
     .header-sub {
-      font-size: .85rem;
+      font-size: .8rem;
       color: #4b5563;
     }
 
@@ -70,27 +78,27 @@
     }
 
     .header-clock-label {
-      font-size: .7rem;
+      font-size: .65rem;
       letter-spacing: .12em;
       text-transform: uppercase;
       color: #6b7280;
     }
 
     .header-clock-time {
-      font-size: 2rem;
+      font-size: 1.8rem;
       font-weight: 800;
       color: #111827;
       font-variant-numeric: tabular-nums;
     }
 
+    /* ================= MAIN ================= */
     main {
-      padding: 24px;
+      padding: 18px;
       display: flex;
       flex-direction: column;
-      gap: 28px;
+      gap: 22px;
     }
 
-    /* CONTINENTS */
     .continent-section {
       border-radius: 16px;
       background: radial-gradient(circle at top left, #111827, #020617 60%);
@@ -101,21 +109,21 @@
     .continent-header {
       display: flex;
       align-items: center;
-      gap: 12px;
-      padding-bottom: 10px;
+      gap: 10px;
+      padding-bottom: 8px;
       border-bottom: 1px solid rgba(55,65,81,.9);
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
 
     .continent-badge {
-      width: 10px;
-      height: 26px;
+      width: 8px;
+      height: 22px;
       border-radius: 999px;
       background: var(--gu-yellow);
     }
 
     .continent-title {
-      font-size: 1rem;
+      font-size: .9rem;
       font-weight: 700;
       letter-spacing: .12em;
       text-transform: uppercase;
@@ -123,18 +131,16 @@
 
     .city-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
       gap: 12px;
     }
 
-    /* CITY CARD */
     .city-card {
       background: #020617;
       border-radius: 14px;
-      padding: 14px 16px;
+      padding: 14px;
       border: 1px solid rgba(31,41,55,.9);
-      box-shadow: 0 10px 25px rgba(0,0,0,.6);
-      transition: background .3s, border .3s;
+      box-shadow: 0 8px 20px rgba(0,0,0,.6);
     }
 
     .city-card.night {
@@ -143,12 +149,12 @@
     }
 
     .city-name {
-      font-size: 1rem;
+      font-size: .95rem;
       font-weight: 600;
     }
 
     .city-time {
-      font-size: 1.8rem;
+      font-size: 1.6rem;
       font-weight: 700;
       margin-top: 6px;
       font-variant-numeric: tabular-nums;
@@ -164,13 +170,62 @@
     }
 
     .footer {
-      padding: 14px 22px 18px;
-      font-size: .75rem;
+      padding: 12px 18px 16px;
+      font-size: .7rem;
       color: #6b7280;
       text-align: right;
     }
+
+    /* ================= MOBILE FIX ================= */
+    @media (max-width: 768px) {
+
+      body {
+        padding: 8px;
+      }
+
+      .shell {
+        border-radius: 14px;
+      }
+
+      header {
+        padding: 12px 14px;
+      }
+
+      .header-inner {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+
+      .header-clock {
+        margin-left: 0;
+        text-align: left;
+      }
+
+      .header-clock-time {
+        font-size: 1.6rem;
+      }
+
+      main {
+        padding: 14px;
+        gap: 18px;
+      }
+
+      .city-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .city-time {
+        font-size: 1.5rem;
+      }
+
+      .footer {
+        text-align: center;
+      }
+    }
   </style>
 </head>
+
 <body>
 <div class="shell">
 
@@ -179,7 +234,7 @@
     <div class="header-logo">
       <img src="Logo.webp" alt="Gühring Logo">
     </div>
-    <div>
+    <div class="header-text">
       <div class="header-title">GSM Länderzeiten</div>
       <div class="header-sub">Globale Zeitzonenübersicht</div>
     </div>
@@ -217,43 +272,32 @@
 </main>
 
 <div class="footer">GSM Länderzeiten · internes Dashboard</div>
+
 </div>
 
 <script>
-const localTZ = "Europe/Berlin";
+const localTZ="Europe/Berlin";
 
-/* Städte inkl. Koordinaten für Wetter */
-const cities = [
-  {name:"Ancenis",tz:"Europe/Paris",lat:47.366,lon:-1.175,cont:"Europa"},
-  {name:"Getafe",tz:"Europe/Madrid",lat:40.308,lon:-3.732,cont:"Europa"},
-  {name:"Lidköping",tz:"Europe/Stockholm",lat:58.505,lon:13.157,cont:"Europa"},
-  {name:"Mailand",tz:"Europe/Rome",lat:45.464,lon:9.190,cont:"Europa"},
-  {name:"Wien",tz:"Europe/Vienna",lat:48.208,lon:16.373,cont:"Europa"},
-  {name:"Belgrad",tz:"Europe/Belgrade",lat:44.787,lon:20.457,cont:"Europa"},
-  {name:"Birmingham",tz:"Europe/London",lat:52.486,lon:-1.890,cont:"Europa"},
-
-  {name:"Brookfield",tz:"America/Chicago",lat:43.060,lon:-88.106,cont:"Amerika"},
-  {name:"Salto",tz:"America/Sao_Paulo",lat:-23.200,lon:-47.286,cont:"Amerika"},
-
-  {name:"Pune",tz:"Asia/Kolkata",lat:18.520,lon:73.856,cont:"Asien"},
-  {name:"Südkorea",tz:"Asia/Seoul",lat:37.566,lon:126.978,cont:"Asien"},
-  {name:"Thailand",tz:"Asia/Bangkok",lat:13.756,lon:100.502,cont:"Asien"}
+const cities=[
+{name:"Ancenis",tz:"Europe/Paris",lat:47.366,lon:-1.175,cont:"Europa"},
+{name:"Getafe",tz:"Europe/Madrid",lat:40.308,lon:-3.732,cont:"Europa"},
+{name:"Lidköping",tz:"Europe/Stockholm",lat:58.505,lon:13.157,cont:"Europa"},
+{name:"Mailand",tz:"Europe/Rome",lat:45.464,lon:9.19,cont:"Europa"},
+{name:"Wien",tz:"Europe/Vienna",lat:48.208,lon:16.373,cont:"Europa"},
+{name:"Belgrad",tz:"Europe/Belgrade",lat:44.787,lon:20.457,cont:"Europa"},
+{name:"Birmingham",tz:"Europe/London",lat:52.486,lon:-1.89,cont:"Europa"},
+{name:"Brookfield",tz:"America/Chicago",lat:43.06,lon:-88.106,cont:"Amerika"},
+{name:"Salto",tz:"America/Sao_Paulo",lat:-23.2,lon:-47.286,cont:"Amerika"},
+{name:"Pune",tz:"Asia/Kolkata",lat:18.52,lon:73.856,cont:"Asien"},
+{name:"Südkorea",tz:"Asia/Seoul",lat:37.566,lon:126.978,cont:"Asien"},
+{name:"Thailand",tz:"Asia/Bangkok",lat:13.756,lon:100.502,cont:"Asien"}
 ];
 
-function grid(cont){ return document.getElementById("grid-"+cont.toLowerCase()); }
-
-function weatherIcon(code){
-  if(code===0) return "☀️";
-  if(code<3) return "🌤";
-  if(code<50) return "☁️";
-  if(code<70) return "🌧";
-  if(code<90) return "🌩";
-  return "❄️";
-}
+function grid(c){return document.getElementById("grid-"+c.toLowerCase());}
 
 function createCards(){
   cities.forEach((c,i)=>{
-    c.id="city-"+i;
+    c.id="c"+i;
     grid(c.cont).insertAdjacentHTML("beforeend",`
       <div class="city-card" id="${c.id}">
         <div class="city-name">${c.name}</div>
@@ -274,32 +318,28 @@ function loadWeather(c){
     .then(d=>{
       const w=d.current_weather;
       document.querySelector(`#${c.id} .weather`).textContent =
-        `${Math.round(w.temperature)}°C ${weatherIcon(w.weathercode)}`;
+        Math.round(w.temperature)+"°C";
     });
 }
 
 function updateTimes(){
   const now=new Date();
-
   document.getElementById("local-time").textContent =
     new Intl.DateTimeFormat("de-DE",{hour:"2-digit",minute:"2-digit",second:"2-digit",timeZone:localTZ}).format(now);
 
   cities.forEach(c=>{
     const card=document.getElementById(c.id);
     const timeEl=card.querySelector(".city-time");
-    const offsetEl=card.querySelector(".offset");
+    const offEl=card.querySelector(".offset");
 
-    const localHour=new Intl.DateTimeFormat("en-US",{hour:"numeric",hour12:false,timeZone:localTZ}).format(now);
-    const cityHour=new Intl.DateTimeFormat("en-US",{hour:"numeric",hour12:false,timeZone:c.tz}).format(now);
+    const lh=Number(new Intl.DateTimeFormat("en-US",{hour:"numeric",hour12:false,timeZone:localTZ}).format(now));
+    const ch=Number(new Intl.DateTimeFormat("en-US",{hour:"numeric",hour12:false,timeZone:c.tz}).format(now));
 
-    let diff=cityHour-localHour;
-    if(diff>12) diff-=24;
-    if(diff<-12) diff+=24;
-
-    offsetEl.textContent=(diff>0?`+${diff}`:diff)+" h";
+    let diff=ch-lh; if(diff>12)diff-=24; if(diff<-12)diff+=24;
+    offEl.textContent=(diff>0?"+":"")+diff+" h";
 
     timeEl.textContent=new Intl.DateTimeFormat("de-DE",{hour:"2-digit",minute:"2-digit",timeZone:c.tz}).format(now);
-    card.classList.toggle("night",cityHour<6||cityHour>=18);
+    card.classList.toggle("night",ch<6||ch>=18);
   });
 }
 
