@@ -336,7 +336,7 @@ function createCards(){
 
     if (matchMedia("(hover:hover)").matches) {
       card.addEventListener("mouseenter", ()=>{
-        hoverTimer = setTimeout(()=>showForecast(i, card), 200);
+        hoverTimer = setTimeout(()=>showForecast(i, card), 800);
       });
       card.addEventListener("mouseleave", ()=>{
         clearTimeout(hoverTimer);
@@ -384,3 +384,4 @@ setInterval(updateTimes,1000);
 </script>
 </body>
 </html>
+
